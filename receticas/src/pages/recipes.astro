@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RecipeList from '../components/RecipeList';
+
+const recipes = [
+  {
+    id: 1,
+    title: 'Spaghetti Carbonara',
+    category: 'Pasta',
+    ingredients: ['spaghetti', 'huevos', 'panceta', 'queso parmesano'],
+    image: 'https://via.placeholder.com/150?text=Carbonara',
+    difficulty: 'NORMAL',
+    author: 'Chef Mario',
+    prepTime: '30 minutos'
+  },
+  {
+    id: 2,
+    title: 'Pollo al Curry',
+    category: 'Plato principal',
+    ingredients: ['pollo', 'curry', 'leche de coco', 'arroz'],
+    image: 'https://via.placeholder.com/150?text=Curry',
+    difficulty: 'FACIL',
+    author: 'Chef Lila',
+    prepTime: '45 minutos'
+  },
+  {
+    id: 3,
+    title: 'Ensalada César',
+    category: 'Ensalada',
+    ingredients: ['lechuga', 'pollo', 'crutones', 'aderezo césar'],
+    image: 'https://via.placeholder.com/150?text=Cesar',
+    difficulty: 'FACIL',
+    author: 'Chef Julia',
+    prepTime: '20 minutos'
+  },
+  {
+    id: 4,
+    title: 'Tacos de Pescado',
+    category: 'Mexicana',
+    ingredients: ['tortillas', 'pescado', 'col', 'salsa'],
+    image: 'https://via.placeholder.com/150?text=Tacos',
+    difficulty: 'NORMAL',
+    author: 'Chef Carlos',
+    prepTime: '35 minutos'
+  },
+  {
+    id: 5,
+    title: 'Risotto de Champiñones',
+    category: 'Arroz',
+    ingredients: ['arroz arborio', 'champiñones', 'caldo', 'queso parmesano'],
+    image: 'https://via.placeholder.com/150?text=Risotto',
+    difficulty: 'DIFICIL',
+    author: 'Chef Sophia',
+    prepTime: '50 minutos'
+  },
+];
+
+const categories = [...new Set(recipes.map(recipe => recipe.category))];
+---
+
+<Layout title="Recetas">
+  <main>
+    <h1>Nuestras Recetas</h1>
+    <div class="category-filter">
+      <label for="category-select">Filtrar por categoría:</label>
+      <select id="category-select">
+        <option value="">Todas las categorías</option>
+        {categories.map(category => (
+          <option value={category}>{category}</option>
+        ))}
+      </select>
+    </div>
+    <RecipeList client:load recipes={recipes} />
+  </main>
+</Layout>
+
+<script>
+  const categorySelect = document.getElementById('category-select');
+  const recipeList = document.querySelector('.recipe-list');
+
+  if (categorySelect && recipeList) {
+    categorySelect.addEventListener('change', (event) => {
+      const selectedCategory = event.target.value;
+      recipeList.setAttribute('data-selected-category', selectedCategory);
+    });
+  }
+</script>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: #333;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  .category-filter {
+    margin-bottom: 1rem;
+  }
+  select {
+    margin-left: 0.5rem;
+    padding: 0.25rem;
+  }
+</style>

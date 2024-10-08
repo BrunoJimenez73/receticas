@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const recipes = [
+    {
+      id: 1,
+      title: 'Spaghetti Carbonara',
+      category: 'Pasta',
+      ingredients: ['spaghetti', 'huevos', 'panceta', 'queso parmesano'],
+      image: 'https://via.placeholder.com/150?text=Carbonara',
+      difficulty: 'NORMAL',
+      author: 'Chef Mario',
+      prepTime: '30 minutos',
+      instructions: 'Cocinar la pasta, mezclar con huevos, panceta y queso.'
+    },
+    {
+      id: 2,
+      title: 'Pollo al Curry',
+      category: 'Plato principal',
+      ingredients: ['pollo', 'curry', 'leche de coco', 'arroz'],
+      image: 'https://via.placeholder.com/150?text=Curry',
+      difficulty: 'FACIL',
+      author: 'Chef Lila',
+      prepTime: '45 minutos',
+      instructions: 'Cocinar el pollo con curry y leche de coco, servir con arroz.'
+    },
+    {
+      id: 3,
+      title: 'Ensalada César',
+      category: 'Ensalada',
+      ingredients: ['lechuga', 'pollo', 'crutones', 'aderezo césar'],
+      image: 'https://via.placeholder.com/150?text=Cesar',
+      difficulty: 'FACIL',
+      author: 'Chef Julia',
+      prepTime: '20 minutos',
+      instructions: 'Mezclar lechuga, pollo y crutones, añadir aderezo césar.'
+    },
+    {
+      id: 4,
+      title: 'Tacos de Pescado',
+      category: 'Mexicana',
+      ingredients: ['tortillas', 'pescado', 'col', 'salsa'],
+      image: 'https://via.placeholder.com/150?text=Tacos',
+      difficulty: 'NORMAL',
+      author: 'Chef Carlos',
+      prepTime: '35 minutos',
+      instructions: 'Cocinar el pescado, servir en tortillas con col y salsa.'
+    },
+    {
+      id: 5,
+      title: 'Risotto de Champiñones',
+      category: 'Arroz',
+      ingredients: ['arroz arborio', 'champiñones', 'caldo', 'queso parmesano'],
+      image: 'https://via.placeholder.com/150?text=Risotto',
+      difficulty: 'DIFICIL',
+      author: 'Chef Sophia',
+      prepTime: '50 minutos',
+      instructions: 'Cocinar el arroz con caldo, añadir champiñones y queso.'
+    },
+  ];
+
+  return recipes.map((recipe) => ({
+    params: { id: recipe.id.toString() },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+
+if (!recipe) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout title={recipe.title}>
+  <main>
+    <h1>{recipe.title}</h1>
+    <img src={recipe.image} alt={recipe.title} class="recipe-image" />
+    <p><strong>Categoría:</strong> {recipe.category}</p>
+    <p><strong>Dificultad:</strong> {recipe.difficulty}</p>
+    <p><strong>Autor:</strong> {recipe.author}</p>
+    <p><strong>Tiempo de preparación:</strong> {recipe.prepTime}</p>
+    <h2>Ingredientes:</h2>
+    <ul>
+      {recipe.ingredients.map((ingredient) => (
+        <li>{ingredient}</li>
+      ))}
+    </ul>
+    <h2>Instrucciones:</h2>
+    <p>{recipe.instructions}</p>
+    <a href="/recipes">Volver a la lista de recetas</a>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: #333;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+  }
+  ul {
+    padding-left: 1.5em;
+  }
+  .recipe-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+</style>
